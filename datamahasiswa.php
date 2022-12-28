@@ -1,5 +1,7 @@
+<head>
 
-
+</head>
+<body>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -10,6 +12,7 @@
             <th scope="col">gender</th>
             <th scope="col">email</th>
             <th scope="col">Gambar</th>
+            <th scope="col">Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +22,7 @@
             $query=mysqli_query($connect, "SELECT * FROM latihanphp1");
             while ($result=mysqli_fetch_array($query)) {
                 ?>
-                    <tr>
+                    <tr id="baris-<?php echo $result['id']; ?>">
                         <td>
                             <?php echo $no++; ?>
                         </td>
@@ -39,7 +42,11 @@
                             <?php echo $result['email']; ?>
                         </td>
                         <td>
-                          <?php echo "<img  src='..\java\img/$result[gambar]' width=50 >";?>
+                            <?php echo "<img  src='..\java\img/$result[gambar]' width=50 >";?>
+                        </td>
+                        <td>
+                            <!-- Tambahkan tombol Hapus -->
+                            <button class="btn-hapus" data-id="<?php echo $result['id']; ?>">Hapus</button>
                         </td>
                     </tr>
                 <?php
@@ -47,3 +54,23 @@
         ?>
     </tbody>
 </table>
+
+<script>
+ $(document).ready(function(){
+      $("button.btn-hapus").click(function(){
+         var id = $(this).attr("data-id");
+        
+            $.ajax({
+               url: 'hapus.php',
+               type: 'get',
+               data: 'id=' + id,
+               success: function(data){
+                  update();
+               }
+            });
+         
+         return false;
+      });
+   });
+</script>
+</body>
